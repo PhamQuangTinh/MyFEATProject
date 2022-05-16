@@ -1,0 +1,23 @@
+:root{
+    --text-color: #333;
+    --white-color: #fff;
+    --black-color: #000;
+    --icon-size: 30px;
+    --font-size: 1.4rem;
+    --filter-width: 140px;
+    --filter-height: 42px;
+    --font-weight: 300;
+    --left-menu-width: 80px;
+    --content-width: 92.3%;
+    --filter-border:1px solid rgb(205, 206, 206);
+}
+
+* {
+    box-sizing: inherit;
+}
+
+html{
+    font-size: 62.5%;
+    line-height: 1.6rem;
+    font-family: 'Roboto', sans-serif;
+}
