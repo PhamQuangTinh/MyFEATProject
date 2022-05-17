@@ -83,8 +83,7 @@
 
 .left-menu{
     min-width: var(--left-menu-width);
-    height: 100vh;
-    box-shadow: 1px 2px black;
+    min-height: 100vh;
 
 }
 .left-menu__big-icon{
@@ -337,7 +336,6 @@
     display: inline-block;
     width: 20px;
     height: 20px;
-    margin-right: 12px;
     vertical-align: middle;
     background-color: inherit;
     border: 1px solid #004C91;
@@ -348,8 +346,10 @@
     content: "";
     display: block;
     position: absolute;
-    top: 13%;
-    left: 13.5%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0 auto;
     width: calc(100% - 5px);
     height: calc(100% - 5px);
     border-radius: 3px;
@@ -365,13 +365,14 @@
 }
 
 .content__body{
-    width: auto;
-    overflow: scroll;
+    width: 100%;
+    overflow-x: scroll;
 }
 
 .content__table{
     border-collapse: collapse;
     border-bottom: 1px solid rgb(154, 154, 157);
+    table-layout: fixed;
 }
 .content__table th, td {
     padding: 0px 22px;
@@ -397,4 +398,36 @@
 .content_table__body-value{
     margin: 0px;
     box-sizing: border-box;
+}
+
+
+/*pagination*/
+
+.pagination {
+    padding: 12px 8px;
+}
+.pagination__parent {
+    margin: 0px;
+    padding: 0px;
+    font-size: var(--font-size);
+    list-style: none;
+    height: 32px;
+}
+
+.pagination__parent li {
+    display: inline-block;
+    min-width: 32px;
+    height: 100%;
+    margin-right: 8px;
+    text-align: center;
+    line-height: 30px;
+}
+
+.pagination__parent a {
+    display: block;
+    padding: 0px 6px;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+    font-weight: 700;
 }
