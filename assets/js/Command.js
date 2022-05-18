@@ -33,19 +33,30 @@ export function sendGetMethod(xhttp, api, ...param) {
     xhttp.send();
 }
 
+export function removeElementsByClassName(...className){
+    for (let i = 0; i < className.length; i++){
+        let elements = document.getElementsByClassName(className[i])
+        if (elements[0] !== undefined){
+            while(elements.length > 0){
+                elements[0].parentNode.removeChild(elements[0]);
+            }
+        }
+    }
+}
+
 export function loadPagination(totalRecord, pageSize, currentPage){
     let totalPage = parseInt(totalRecord / pageSize);
     let paginationElement = document.getElementsByClassName("pagination__parent")
     const validPageNumber = PAGINATION_NUMBER;
     let pagination;
     if (currentPage > 0 && currentPage < validPageNumber ){
-        pagination = new FirstSitePagination(totalPage, currentPage, PAGINATION_NUMBER);
+        pagination = new FirstSitePagination(totalPage, currentPage);
     } else if(currentPage >= validPageNumber && currentPage <= (totalPage - PAGINATION_NUMBER - 1)){
-        pagination = new MiddleSitePagination(totalPage, currentPage, Pagination);
+        pagination = new MiddleSitePagination(totalPage, currentPage);
     } else if(currentPage >= (totalPage - PAGINATION_NUMBER - 1) && currentPage < PAGINATION_NUMBER){
-        pagination = new LastSitePagination(totalPage, currentPage, Pagination);
+        pagination = new LastSitePagination(totalPage, currentPage);
     }else{
-        pagination = new Pagination(totalPage, currentPage, PAGINATION_NUMBER);
+        pagination = new Pagination(totalPage, currentPage);
     }
     pagination.setPagination(paginationElement);
 }

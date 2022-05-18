@@ -1,13 +1,15 @@
 import {htmlToElement, getDateFromMillisecond,
-    sendGetMethod, loadPagination} from './Command.js'
+    sendGetMethod, loadPagination, removeElementsByClassName} from './Command.js'
 import * as url from './util/api/get/AdminApi.js'
 
+loadOrderChildS1(1);
+
 export function loadOrderChildS1(page){
-    console.log(page)
     const xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             let content = document.getElementsByClassName("content__table");
+            removeElementsByClassName("content__table__body", "pagination__children")
             const response = JSON.parse(this.responseText);
             let pageSize = response.data.page_size;
             let totalRecord = response.data.total_record;
@@ -78,5 +80,3 @@ function setWidthForColumnTable(){
         elementChildren[i].style.width = withElement;
     }
 }
-
-loadOrderChildS1(1);

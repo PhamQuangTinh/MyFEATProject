@@ -1,12 +1,13 @@
 import {htmlToElement} from "../Command.js";
 import {loadOrderChildS1} from "../Main.js";
+import {PAGINATION_NUMBER} from "../util/detail.js";
 
 export class Pagination {
 
-    constructor(totalPage, currentPage, validPageNumber) {
+    constructor(totalPage, currentPage) {
         this._totalPage = totalPage;
         this._currentPage = currentPage;
-        this._validPageNumber = validPageNumber;
+        this._validPageNumber = PAGINATION_NUMBER;
     }
 
     setPagination(element) {
@@ -48,13 +49,15 @@ export class Pagination {
     setElement(element, index) {
         let value =
                 `
-                        <a href="" class="pagination__children-page">
+                        <a href="javascript:void(0)" class="pagination__children-page">
                             ${index}
                         </a>
                 `
         let elementChild = htmlToElement(value, "li", 'pagination__children');
         elementChild.title = index
-        elementChild.onclick = function (){console.log(index)};
+        elementChild.onclick = function (){
+            loadOrderChildS1(index)
+        }
         element[0].appendChild(elementChild)
     }
 
@@ -103,13 +106,13 @@ export class FirstSitePagination extends Pagination {
     }
 
     setPagination(element) {
-        element = this.setFirstElement(element);
+        this.setFirstElement(element);
         let isLastPage = this.currentPage == this.validPageNumber - 1;
         for (let i = 1; i <= this.validPageNumber; i++) {
             this.setElement(element, i)
         }
         if (isLastPage){
-            this.setElement(element, this.validPageNumber)
+            this.setElement(element, this.validPageNumber + 1)
         }
         this.setLoadMultiElement(element)
         this.setElement(element, this.totalPage)
@@ -120,7 +123,24 @@ export class FirstSitePagination extends Pagination {
 
 export class MiddleSitePagination extends Pagination {
 
+    setPagination(element) {
+        this.setFirstElement(element);
+        this.setLoadMultiElement(element)
 
+        let leftPage = parseInt(this.validPageNumber - (this.validPageNumber / 2));
+        let rightPage = this.validPageNumber - leftPage - 1;
+        for (let i = (this.currentPage - leftPage); i < this.currentPage; i++) {
+            this.setElement(element, i)
+        }
+
+        for (let i = this.currentPage; i <= (this.currentPage  + rightPage); i++) {
+            this.setElement(element, i)
+        }
+        this.setLoadMultiElement(element)
+        this.setElement(element, this.totalPage)
+        this.setLastElement(element);
+        this.setChoseItem(element)
+    }
     constructor(totalPage, currentPage, validPageNumber) {
         super(totalPage, currentPage, validPageNumber);
     }
