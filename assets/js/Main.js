@@ -1,13 +1,17 @@
-import {htmlToElement, getDateFromMillisecond as convertMillisecond} from './command.js'
-function loadOrderChildS1(){
+import {htmlToElement, getDateFromMillisecond,
+    sendGetMethod, loadPagination} from './Command.js'
+import * as url from './util/api/get/AdminApi.js'
 
+export function loadOrderChildS1(page){
+    console.log(page)
     const xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             let content = document.getElementsByClassName("content__table");
             const response = JSON.parse(this.responseText);
-            let lengthResponse = response.data.order.length;
-            for(let i = 0; i < lengthResponse; i++){
+            let pageSize = response.data.page_size;
+            let totalRecord = response.data.total_record;
+            for(let i = 0; i < pageSize; i++){
                 let item = response.data.order[i];
                 let value = `
                         <td>
@@ -22,7 +26,7 @@ function loadOrderChildS1(){
                             <span>${i+1}</span>
                         </td>
                         <td>
-                            <span>${convertMillisecond(item.create_date)}</span>
+                            <span>${getDateFromMillisecond(item.create_date)}</span>
                         </td>
                         <td>
                             <span>${item.user_agency_name}</span>
@@ -43,7 +47,7 @@ function loadOrderChildS1(){
                             <span>${item.status_name}</span>
                         </td>
                         <td>
-                            <span>${convertMillisecond(item.receive_order_time)}</span>
+                            <span>${getDateFromMillisecond(item.receive_order_time)}</span>
                         </td>
                         <td>
                             <span>${item.status_priority}</span>
@@ -60,11 +64,10 @@ function loadOrderChildS1(){
                 content[0].appendChild(entry)
             }
             setWidthForColumnTable();
+            loadPagination(totalRecord, pageSize, page);
         }
     };
-    xhttp.open("GET", "http://cmcapp.ipicorp.co:10003/adminservice/order/list_order_agency?startValue=1649955600000&endValue=1652633999999&page=1&status=0&search=&user_agency_id=0&membership_id=0&from_date_temp=1649955600000&to_date_temp=1652633999999");
-    xhttp.setRequestHeader("token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpdEBhbmh0aW4udm4iLCJpZCI6NTYsImVtYWlsIjoiaXRAYW5odGluLnZuIiwicm9sZSI6IkFETUlOIiwibmFtZSI6IkzDqiDEkHV5biIsInVzZXJuYW1lIjoiaXQiLCJleHAiOjE2NTI4NDE1OTV9.mJJtKViXLrGiqRuJ9xrD3Bl9SNSuZQ02lUdhkMo8Wxs-/order/list_order_agency");
-    xhttp.send();
+    sendGetMethod(xhttp, url.GET_ORDER_DETAIL, 1649955600000, 1652633999999, page, 0, '', 0, 0, 1649955600000, 1652633999999);
 }
 
 function setWidthForColumnTable(){
@@ -76,4 +79,4 @@ function setWidthForColumnTable(){
     }
 }
 
-loadOrderChildS1();
+loadOrderChildS1(1);

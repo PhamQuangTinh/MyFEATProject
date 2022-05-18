@@ -429,5 +429,27 @@
     height: 100%;
     text-decoration: none;
     color: inherit;
-    font-weight: 700;
+    font-weight: 500;
+}
+
+.load-more i {
+    display: none;
+}
+
+.load-more span{
+    padding: 0px;
+    margin: 0px;
+}
+
+.load-more:hover i {
+    display: inline-block;
+}
+
+.load-more:hover span {
+    display: none;
+}
+
+.pagination__chose-item {
+    background-color: #004C91;
+    color: var(--white-color);
 }

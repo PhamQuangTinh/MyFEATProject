@@ -1,0 +1,9 @@
+
+
+const DOMAIN_DEV = 'http://119.82.141.7:10003'
+
+const DOMAIN_TEST = 'http://115.165.166.24:10003'
+
+const CURRENT_DOMAIN = DOMAIN_DEV;
+
+export default CURRENT_DOMAIN;
