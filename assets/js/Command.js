@@ -51,9 +51,9 @@ export function loadPagination(totalRecord, pageSize, currentPage){
     let pagination;
     if (currentPage > 0 && currentPage < validPageNumber ){
         pagination = new FirstSitePagination(totalPage, currentPage);
-    } else if(currentPage >= validPageNumber && currentPage <= (totalPage - PAGINATION_NUMBER - 1)){
+    } else if(currentPage >= validPageNumber && currentPage <= (totalPage - (PAGINATION_NUMBER - 1))){
         pagination = new MiddleSitePagination(totalPage, currentPage);
-    } else if(currentPage >= (totalPage - PAGINATION_NUMBER - 1) && currentPage < PAGINATION_NUMBER){
+    } else if(currentPage >= (totalPage - (PAGINATION_NUMBER - 2)) && currentPage <= totalPage){
         pagination = new LastSitePagination(totalPage, currentPage);
     }else{
         pagination = new Pagination(totalPage, currentPage);

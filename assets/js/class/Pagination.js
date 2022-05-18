@@ -81,9 +81,9 @@ export class Pagination {
         element[0].appendChild(htmlToElement(value, 'li', 'pagination__children', 'load-more'))
     }
 
-    setChoseItem(element){
+    setChoseItem(element, index){
         let childElements = element[0].children;
-        childElements[this.currentPage].className += " pagination__chose-item"
+        childElements[index].className += " pagination__chose-item"
     }
 
     get totalPage() {
@@ -117,7 +117,7 @@ export class FirstSitePagination extends Pagination {
         this.setLoadMultiElement(element)
         this.setElement(element, this.totalPage)
         this.setLastElement(element);
-        this.setChoseItem(element)
+        this.setChoseItem(element, this.currentPage)
     }
 }
 
@@ -125,21 +125,23 @@ export class MiddleSitePagination extends Pagination {
 
     setPagination(element) {
         this.setFirstElement(element);
+        this.setElement(element, 1)
         this.setLoadMultiElement(element)
 
-        let leftPage = parseInt(this.validPageNumber - (this.validPageNumber / 2));
-        let rightPage = this.validPageNumber - leftPage - 1;
-        for (let i = (this.currentPage - leftPage); i < this.currentPage; i++) {
+        let dividePageNumber = parseInt(this.validPageNumber / 2)
+        let leftPage = this.currentPage - dividePageNumber
+        let rightPage = this.currentPage + dividePageNumber;
+        for (let i = leftPage; i < this.currentPage; i++) {
             this.setElement(element, i)
         }
 
-        for (let i = this.currentPage; i <= (this.currentPage  + rightPage); i++) {
+        for (let i = this.currentPage; i <= rightPage; i++) {
             this.setElement(element, i)
         }
         this.setLoadMultiElement(element)
         this.setElement(element, this.totalPage)
         this.setLastElement(element);
-        this.setChoseItem(element)
+        this.setChoseItem(element, dividePageNumber + 3)
     }
     constructor(totalPage, currentPage, validPageNumber) {
         super(totalPage, currentPage, validPageNumber);
@@ -147,7 +149,20 @@ export class MiddleSitePagination extends Pagination {
 }
 
 export class LastSitePagination extends Pagination {
-
+    setPagination(element) {
+        this.setFirstElement(element);
+        this.setElement(element, 1)
+        this.setLoadMultiElement(element)
+        let isFirstPage = this.currentPage == this.totalPage - (this.validPageNumber - 2);
+        let currentPage = !isFirstPage ? (this.totalPage - (this.validPageNumber - 1)) : (this.totalPage - this.validPageNumber)
+        for (let i = currentPage; i <= this.totalPage; i++) {
+            this.setElement(element, i)
+        }
+        this.setLastElement(element);
+        let ok = (this.validPageNumber + 2 + (isFirstPage ? 1 : 0)) - (this.totalPage - this.currentPage)
+        console.log(ok)
+        this.setChoseItem(element, ok)
+    }
 
     constructor(totalPage, currentPage, validPageNumber) {
         super(totalPage, currentPage, validPageNumber);
