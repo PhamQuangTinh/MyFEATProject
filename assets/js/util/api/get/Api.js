@@ -19,7 +19,7 @@ export default class Api{
         return this._url;
     }
 
-    getAPIUrlGetMethod(params){
+    getAPIUrlGetMethod(params = new Map()){
         let result = this.domain + this.service + this.url
         let i = 0;
         for(let [key, value] of params) {

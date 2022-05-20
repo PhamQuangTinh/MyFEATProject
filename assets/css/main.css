@@ -240,12 +240,15 @@
     box-sizing: border-box;
     position: relative;
 }
-.content__filter-input:hover {
-    cursor: pointer;
+
+.content__filter-input span {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
-.content__filter-input:hover .content__filter-child__drop-down{
-    display: block;
+.content__filter-input:hover {
+    cursor: pointer;
 }
 
 .content__filter-input::before {
@@ -255,19 +258,15 @@
     font-weight: 200;
 }
 
-.user__input::before{
+#user__input::before{
     content: "Đại lý";
 }
 
-.status__input::before{
+#status__input::before{
     content: "Trạng thái";
 }
 
-.note__input::before{
-    content: "Ghi chú";
-}
-
-.membership__input:before{
+#membership__input::before{
     content: "Cấp bậc";
 }
 .content__filter-child__drop-down{
@@ -282,6 +281,14 @@
     top: calc(100% + 3px);
     border: var(--filter-border);
     box-sizing: border-box;
+    overflow-y: scroll;
+    max-height: 200px;
+}
+.drop_down{
+    display: block;
+}
+
+.drop_up{
     display: none;
 }
 
@@ -300,6 +307,11 @@
     font-size: var(--font-size);
     font-weight: var(--font-weight);
     padding: 5px 12px;
+}
+
+.content__filter-child__drop-down__item span {
+    margin: 0px;
+    padding: 0px;
 }
 
 .content__filter-child__drop-down__item:hover {
