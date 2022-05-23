@@ -157,6 +157,11 @@
     padding: 24px 36px;
 }
 
+.content__header{
+    display: flex;
+    justify-content: space-between;
+}
+
 .content__header-title{
     color: rgb(0, 76, 145);
     font-size: 22px;
@@ -169,18 +174,7 @@
     display: inline-block;
 }
 
-.content__header-search{
-    background-color: var(--white-color);
-    width: 50%;
-    height: 40px;
-    border-radius: 20px;
-    float: right;
-    display: flex;
-    justify-content: flex-end;
-
-}
-
-.content__header-search-icon {
+.content__header-search-content {
     width: 42px;
     height: 42px;
     background-color: var(--white-color);
@@ -191,7 +185,7 @@
 
 }
 
-.content__header-search-icon i{
+.content__header-search-content i{
     font-size: 17px;
 
 }
@@ -258,17 +252,10 @@
     font-weight: 200;
 }
 
-#user__input::before{
-    content: "Đại lý";
+.content__filter-input::before{
+    content: attr(filter-name);
 }
 
-#status__input::before{
-    content: "Trạng thái";
-}
-
-#membership__input::before{
-    content: "Cấp bậc";
-}
 .content__filter-child__drop-down{
     list-style: none;
     position: absolute;
@@ -407,6 +394,10 @@
     text-align: center;
 }
 
+.content__table__body:hover{
+    background-color: #E6F6FF;
+}
+
 .content_table__body-value{
     margin: 0px;
     box-sizing: border-box;
@@ -464,4 +455,51 @@
 .pagination__chose-item {
     background-color: #004C91;
     color: var(--white-color);
+}
+
+
+.content__header-search{
+    background-color: var(--white-color);
+    height: 40px;
+    border-radius: 20px;
+
+}
+
+.content__header-search-input{
+    border: 0;
+    outline: 0;
+    background: none;
+    width: 0;
+    caret-color:transparent;
+    line-height: 40px;
+    transition: width 0.2s linear;
+    font-size: var(--font-size);
+}
+
+.searchbar:hover > .content__header-search-input{
+    padding: 0 10px;
+    width: 30vw;
+    caret-color: black;
+    transition: width 0.2s linear;
+}
+
+.searchbar:hover > .search_icon{
+    color: #004C91;
+}
+
+.search_icon{
+    height: 40px;
+    width: 40px;
+    float: right;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    color: #4A4949;
+    text-decoration:none;
+}
+
+.width-30vh{
+    padding: 0 10px;
+    width: 30vw;
 }

@@ -92,7 +92,7 @@ export class Pagination {
                             <span>•••</span>
                         </a>
                 `
-        let elementChild = htmlToElement(value, 'li', 'pagination__children', 'load-more');
+        let elementChild = htmlToElement(value, 'li', 'pagination__children load-more');
         const currentPage = this.currentPage;
         let index = currentPage + this.validPageNumber;
         if (index > this.totalPage) index = this.totalPage
@@ -115,7 +115,7 @@ export class Pagination {
                             <span>•••</span>
                         </a>
                 `
-        let elementChild = htmlToElement(value, 'li', 'pagination__children', 'load-more');
+        let elementChild = htmlToElement(value, 'li', 'pagination__children load-more');
         const currentPage = this.currentPage;
         let index = currentPage - this.validPageNumber;
         if (index < 0) index = 1
@@ -149,18 +149,26 @@ export class FirstSitePagination extends Pagination {
     }
 
     setPagination(element) {
-        this.setFirstElement(element);
-        let isLastPage = this.currentPage == this.validPageNumber - 1;
-        for (let i = 1; i <= this.validPageNumber; i++) {
-            this.setElement(element, i)
+        if (this.totalPage > 0) {
+            this.setFirstElement(element);
+            if (this.totalPage > this.validPageNumber) {
+                let isLastPage = this.currentPage == this.validPageNumber - 1;
+                for (let i = 1; i <= this.validPageNumber; i++) {
+                    this.setElement(element, i)
+                }
+                if (isLastPage) {
+                    this.setElement(element, this.validPageNumber + 1)
+                }
+                this.setLoadMoreMultiElement(element)
+                this.setElement(element, this.totalPage)
+            } else {
+                for (let i = 1; i <= this.totalPage; i++) {
+                    this.setElement(element, i)
+                }
+            }
+            this.setChoseItem(element, this.currentPage)
+            this.setLastElement(element);
         }
-        if (isLastPage){
-            this.setElement(element, this.validPageNumber + 1)
-        }
-        this.setLoadMoreMultiElement(element)
-        this.setElement(element, this.totalPage)
-        this.setLastElement(element);
-        this.setChoseItem(element, this.currentPage)
     }
 }
 

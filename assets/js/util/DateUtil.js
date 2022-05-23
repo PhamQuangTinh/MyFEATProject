@@ -3,8 +3,16 @@ export function getDateFromMillisecond(millisecond, format = "#DD#/#MM#/#YYYY# #
     return new Date(millisecond).customFormat( format );
 }
 
+export function getMillisecondFromDate(date, format = "#DD#/#MM#/#YYYY# #hh#:#mm#:#ss#"){
+    return new Date(date).getTime()
+}
+
 export function plusDateMillisecond(date, dayPlush){
     return date + (dayPlush * 86400000)
+}
+
+export function minusDateMillisecond(date, dayPlush){
+    return date - (dayPlush * 86400000)
 }
 
 

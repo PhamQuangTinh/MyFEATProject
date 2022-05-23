@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="assets/css/base.css">
     <link rel="stylesheet" href="assets/css/main.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/fonts/fontawesome-free-6.1.1-web/css/all.min.css" />
     <script type="module" src="assets/js/Main.js"></script>
 
 </head>
@@ -153,8 +154,9 @@
             <div class="content__header">
                 <h1 class="content__header-title">Danh sách đơn hàng ĐLC1</h1>
                 <div class="content__header-search">
-                    <div class="content__header-search-icon">
-                        <i class="fa-solid fa-magnifying-glass"></i>
+                    <div class="searchbar">
+                        <a href="#" class="search_icon"><i class="fas fa-search"></i></a>
+                        <input class="content__header-search-input" type="text" name="" placeholder="Tìm kiếm theo mã đơn hàng, tên đại lý, mã đại lý">
                     </div>
                 </div>
             </div>
@@ -173,7 +175,7 @@
 
                 <div class="content__filter-child">
                     <div class="content__filter-child-show">
-                        <div id="user__input" class="content__filter-input">
+                        <div id="user__input" filter-name = "Đại lý" class="content__filter-input">
                             <span title="0">Tất cả</span>
                             <div>
                                 <i class="fa-solid fa-chevron-down"></i>
@@ -186,8 +188,8 @@
                 </div>
 
                 <div class="content__filter-child-show">
-                    <div id="status__input"  class="content__filter-input">
-                        <span>Tất cả</span>
+                    <div id="status__input" filter-name = "Trạng thái" class="content__filter-input">
+                        <span title="0">Tất cả</span>
                         <div>
                             <i class="fa-solid fa-chevron-down"></i>
                         </div>
@@ -199,8 +201,8 @@
                 </div>
 
                 <div class="content__filter-child-show">
-                    <div id="membership__input"  class="content__filter-input">
-                        <span>Tất cả</span>
+                    <div id="membership__input" filter-name = "Cấp bậc" class="content__filter-input">
+                        <span title="0">Tất cả</span>
                         <div>
                             <i class="fa-solid fa-chevron-down"></i>
                         </div>
@@ -220,12 +222,6 @@
                         </div>
 
                         <ul class="content__filter-child__drop-down">
-                            <li class="content__filter-child__drop-down__item">Tất cả</li>
-                            <li class="content__filter-child__drop-down__item">Thành viên</li>
-                            <li class="content__filter-child__drop-down__item">Bạc</li>
-                            <li class="content__filter-child__drop-down__item">Titan</li>
-                            <li class="content__filter-child__drop-down__item">Vàng</li>
-                            <li class="content__filter-child__drop-down__item">Bạch Kim</li>
                         </ul>
                     </div>
                 </div>
