@@ -2,7 +2,7 @@ import {GET_DROP_LIST_MEMBERSHIP, GET_DROP_LIST_ORDER_STATUS, GET_LIST_ORDER_S1}
 import * as command from "../Command.js";
 import {getDateFromMillisecond, getMillisecondFromDate, minusDateMillisecond} from "../util/DateUtil.js";
 import {FILTER_DATE_DISTANCE} from "../util/Detail.js";
-import {CURRENT_SCREEN} from "../Screen.js";
+import {CURRENT_SCREEN, loadScreenBody} from "./screen/ScreenValue.js";
 export class Filter {
     constructor(dataName, parentIdName, fieldName, api) {
         this._parentIdName = parentIdName;
@@ -13,56 +13,124 @@ export class Filter {
 
     loadFilterChild(){
         if (this == FilterType.FILTER_DATE){
-            loadFilterDate()
+            this.loadFilterDate()
         } else if(this == FilterType.FILTER_SEARCH){
-          loadFilterSearch()
+          this.loadFilterSearch()
         } else {
-            const xhttp = new XMLHttpRequest();
-            const dataName = this._dataName
-            const parentIdName = this._parentIdName
-            const fieldName = this._fieldName
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    const response = JSON.parse(this.responseText);
-                    if (response.code === 1) {
-                        let listResponse = response.data[dataName]
-                        let content = document.getElementById(parentIdName);
-                        let listContent = content.getElementsByTagName("ul")
-                        const firstChild = command.htmlToElement(
-                            `
+            this.filterDropdown();
+        }
+    }
+
+    filterDropdown() {
+        const filterName = this.getFilterName();
+        let filter = `
+                    <div class="content__filter-child-show">
+                        <div id="${this.parentIdName}" filter-name = "${filterName}" class="content__filter-input">
+                            <span title="0">Tất cả</span>
+                            <div>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </div>
+
+                            <ul class="content__filter-child__drop-down drop_up">
+                            </ul>
+                        </div>
+                    </div>
+        `
+        let entry = command.htmlToElement(filter, "div", "content__filter-child");
+        let element = document.getElementsByClassName("content__filter");
+        element[0].appendChild(entry)
+        const xhttp = new XMLHttpRequest();
+        const dataName = this._dataName
+        const parentIdName = this._parentIdName
+        const fieldName = this._fieldName
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                const response = JSON.parse(this.responseText);
+                if (response.code === 1) {
+                    let listResponse = response.data[dataName]
+                    let content = document.getElementById(parentIdName);
+                    let listContent = content.getElementsByTagName("ul")
+                    const firstChild = command.htmlToElement(
+                        `
                                     <span>Tất cả</span>
                                 `
-                            , "li", "content__filter-child__drop-down__item"
-                        );
-                        firstChild.onclick = function () {
-                            chooseItem(parentIdName, "Tất cả", 0)
-                            CURRENT_SCREEN.loadPage()
-                        }
-                        listContent[0].appendChild(
-                            firstChild
-                        )
-                        let resultLength = listResponse.length
-                        for (let i = 0; i < resultLength; i++) {
-                            let item = listResponse[i];
-                            let value = `
+                        , "li", "content__filter-child__drop-down__item"
+                    );
+                    firstChild.onclick = function () {
+                        chooseItem(parentIdName, "Tất cả", 0)
+                        loadScreenBody(CURRENT_SCREEN)
+                    }
+                    listContent[0].appendChild(
+                        firstChild
+                    )
+                    let resultLength = listResponse.length
+                    for (let i = 0; i < resultLength; i++) {
+                        let item = listResponse[i];
+                        let value = `
                            <span>${item[fieldName]}</span>
                        `
-                            let entry = command.htmlToElement(value, "li", "content__filter-child__drop-down__item");
-                            entry.onclick = function () {
-                                chooseItem(parentIdName, item[fieldName], item["id"])
-                                CURRENT_SCREEN.loadPage()
-                            }
-                            listContent[0].appendChild(entry)
+                        let entry = command.htmlToElement(value, "li", "content__filter-child__drop-down__item");
+                        entry.onclick = function () {
+                            chooseItem(parentIdName, item[fieldName], item["id"])
+                            loadScreenBody(CURRENT_SCREEN)
                         }
-                        content.onclick = function () {
-                            clickDropdown(parentIdName)
-                        }
-                    } else {
-                        console.log(response.error)
+                        listContent[0].appendChild(entry)
                     }
+                    content.onclick = function () {
+                        clickDropdown(parentIdName)
+                    }
+                } else {
+                    console.log(response.error)
                 }
-            };
-            command.sendGetMethod(xhttp, this._api);
+            }
+        };
+        command.sendGetMethod(xhttp, this._api);
+    }
+
+    loadFilterSearch(){
+        let keySearch = document.querySelector(".searchbar input")
+        keySearch.addEventListener("keydown", event => {
+            if (event.keyCode == 13){
+                loadScreenBody(CURRENT_SCREEN)
+            }
+        });
+    }
+
+    loadFilterDate() {
+
+        let dateNow = Date.now()
+        let startDate = getDateFromMillisecond(minusDateMillisecond(dateNow, FILTER_DATE_DISTANCE), "#YYYY#-#MM#-#DD#")
+        let endDate = getDateFromMillisecond(dateNow, "#YYYY#-#MM#-#DD#")
+        let filterDate = `
+                <div class="content__filter-child-show">
+                    <span>Từ ngày</span>
+                    <div class="content__filter-date">
+                        <input placeholder="Start" value="${startDate}" type="date">
+                    </div>
+                    <span style="margin: 0px; padding: 0px 10px;">-</span>
+                    <div class="content__filter-date">
+                        <input placeholder="End" value="${endDate}" type="date">
+                    </div>
+                </div>
+        `
+        let entry = command.htmlToElement(filterDate, "div", "content__filter-child-show");
+        let element = document.getElementsByClassName("content__filter");
+        if (element[0] === undefined || element[0] === null){
+            element = command.htmlToElement("", "div", "content__filter")
+        }
+        element[0].appendChild(entry)
+
+        let filterDateInput = document.querySelectorAll(".content__filter-date input");
+        if (filterDateInput !== undefined && filterDateInput !== null) {
+            let dateNow = Date.now()
+            filterDateInput[0].defaultValue = getDateFromMillisecond(minusDateMillisecond(Date.now(), FILTER_DATE_DISTANCE), "#YYYY#-#MM#-#DD#")
+            filterDateInput[1].defaultValue = getDateFromMillisecond(dateNow, "#YYYY#-#MM#-#DD#")
+            filterDateInput[0].onchange = function (){
+                loadScreenBody(CURRENT_SCREEN)
+            }
+            filterDateInput[1].onchange = function (){
+                loadScreenBody(CURRENT_SCREEN)
+            }
         }
     }
 
@@ -89,36 +157,23 @@ export class Filter {
         return keySearch
     }
 
+    getFilterName() {
+
+        switch (this) {
+            case FilterType.USER_AGENCY:
+                return "Đại lý";
+            case FilterType.ORDER_STATUS:
+                return "Trạng thái";
+            case FilterType.MEMBERSHIP:
+                return "Cấp bậc"
+        }
+    }
+
     get dataName() {return this._dataName;}
     get parentIdName() {return this._parentIdName;}
     get fieldName() {return this._fieldName;}
     get api() {return this._api;}
     set api(value) {this._api = value;}
-}
-
-function loadFilterSearch(){
-    let keySearch = document.querySelector(".searchbar input")
-    keySearch.addEventListener("keydown", event => {
-        if (event.keyCode == 13){
-            CURRENT_SCREEN.loadPage()
-        }
-    });
-}
-
-export function loadFilterDate() {
-    let filterDate = document.querySelectorAll(".content__filter-date input");
-
-    if (filterDate !== undefined && filterDate !== null) {
-        let dateNow = Date.now()
-        filterDate[0].defaultValue = getDateFromMillisecond(minusDateMillisecond(Date.now(), FILTER_DATE_DISTANCE), "#YYYY#-#MM#-#DD#")
-        filterDate[1].defaultValue = getDateFromMillisecond(dateNow, "#YYYY#-#MM#-#DD#")
-        filterDate[0].onchange = function (){
-            CURRENT_SCREEN.loadPage()
-        }
-        filterDate[1].onchange = function (){
-            CURRENT_SCREEN.loadPage()
-        }
-    }
 }
 
 

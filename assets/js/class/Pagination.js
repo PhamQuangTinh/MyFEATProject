@@ -1,6 +1,6 @@
 import {htmlToElement} from "../Command.js";
-import {loadOrderChildS1} from "../Main.js";
 import {PAGINATION_NUMBER} from "../util/Detail.js";
+import {CURRENT_SCREEN, loadScreenBody} from "./screen/ScreenValue.js";
 
 export class Pagination {
 
@@ -33,7 +33,7 @@ export class Pagination {
         let index = currentPage - 1;
         if(index <= 0) index = 1
         elementChild.onclick = function (){
-            loadOrderChildS1(index, currentPage)
+            loadScreenBody(CURRENT_SCREEN, index, currentPage)
         }
         element[0].appendChild(elementChild)
     }
@@ -54,7 +54,7 @@ export class Pagination {
         let index = currentPage + 1;
         if(index > this.totalPage) index = this.totalPage
         elementChild.onclick = function (){
-            loadOrderChildS1(index, currentPage)
+            loadScreenBody(CURRENT_SCREEN, index, currentPage)
         }
         element[0].appendChild(elementChild)
     }
@@ -70,7 +70,7 @@ export class Pagination {
         elementChild.title = index
         let currentPage = this.currentPage
         elementChild.onclick = function (){
-            loadOrderChildS1(index, currentPage)
+            loadScreenBody(CURRENT_SCREEN, index, currentPage)
         }
         element[0].appendChild(elementChild)
     }
@@ -97,7 +97,7 @@ export class Pagination {
         let index = currentPage + this.validPageNumber;
         if (index > this.totalPage) index = this.totalPage
         elementChild.onclick = function (){
-            loadOrderChildS1(index, currentPage)
+            loadScreenBody(CURRENT_SCREEN, index, currentPage)
         }
         element[0].appendChild(elementChild)
     }
@@ -120,7 +120,7 @@ export class Pagination {
         let index = currentPage - this.validPageNumber;
         if (index < 0) index = 1
         elementChild.onclick = function (){
-            loadOrderChildS1(index, currentPage)
+            loadScreenBody(CURRENT_SCREEN, index, currentPage)
         }
         element[0].appendChild(elementChild)
     }

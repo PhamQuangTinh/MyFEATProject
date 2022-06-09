@@ -157,7 +157,7 @@
     padding: 24px 36px;
 }
 
-.content__header{
+.content__header-value{
     display: flex;
     justify-content: space-between;
 }
